@@ -655,14 +655,26 @@ insert:
 			calcoffsets();
 		}
 		break;
+		/* Use Tab/S-Tab to cycle through entries */
 	case XK_Tab:
-		if (!sel)
-			return;
-		strncpy(text, sel->text, sizeof text - 1);
-		text[sizeof text - 1] = '\0';
-		cursor = strlen(text);
-		match();
+		if (sel && sel->right && (sel = sel->right) == next) {
+			curr = next;
+			calcoffsets();
+		}
 		break;
+	case XK_ISO_Left_Tab:
+		if (sel && sel->left && (sel = sel->left)->right == curr) {
+			curr = prev;
+			calcoffsets();
+		}
+		break;
+		/* if (!sel) */
+		/* 	return; */
+		/* strncpy(text, sel->text, sizeof text - 1); */
+		/* text[sizeof text - 1] = '\0'; */
+		/* cursor = strlen(text); */
+		/* match(); */
+		/* break; */
 	}
 
 draw:
